@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'editprofile.dart';
 import 'favourites.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -94,7 +94,7 @@ class ProfilePageState extends State<ProfilePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FavoritesPage(),
+                        builder: (context) => EditProfilePage(),
                       ), // Navigate to Favorite Page
                     );
                   }),
