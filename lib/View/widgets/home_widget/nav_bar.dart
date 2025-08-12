@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../../Controller/utilities/pick_uploadfile.dart';
+import '../../../Data/model/audios_model.dart';
+import 'search.dart'; // Your SearchWidget
 
 class BottomNavWidget extends StatefulWidget {
   final Function(int) onTabSelected;
@@ -16,10 +19,26 @@ class BottomNavWidget extends StatefulWidget {
 }
 
 class _BottomNavWidgetState extends State<BottomNavWidget> {
+  final uploadService = UploadService();
+
+
+  Future<void> _openSearch(BuildContext context) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('audios')
+        .get();
+
+    final songs = snapshot.docs.map((doc) {
+      return Audios.fromFirestore(doc.data());
+    }).toList();
+
+    showSearch(context: context, delegate: SearchWidget(songs));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Color(0xff42c83c),
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: const Color(0xff42c83c),
       currentIndex: widget.selectedIndex,
       showSelectedLabels: true,
       showUnselectedLabels: true,
@@ -31,6 +50,14 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add),
+          label: 'Add',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'Favorites',
         ),
@@ -39,8 +66,16 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
           label: 'Profile',
         ),
       ],
-      onTap: (index) {
-        widget.onTabSelected(index); // Call parent function to update screen
+      onTap: (index) async {
+        if (index == 1) {
+          // Search
+          await _openSearch(context);
+        } else if (index == 2) {
+          // Add → pick and upload file
+          await uploadService.pickAndUploadFile(context);
+        } else {
+          widget.onTabSelected(index);
+        }
       },
     );
   }

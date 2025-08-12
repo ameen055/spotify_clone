@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseAuthService {
-  // Instance of firebase bloc
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // add the _auth data to the firestore database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Sign up and save to Firestore
@@ -18,7 +16,6 @@ class FirebaseAuthService {
       User? user = result.user;
 
       if (user != null) {
-        // Save extra data to Firestore
         await _firestore.collection('users').doc(user.uid).set({
           'uid': user.uid,
           'name': name,
@@ -29,7 +26,10 @@ class FirebaseAuthService {
 
       return user;
     } on FirebaseAuthException catch (e) {
-      print("Error: ${e.message}");
+      print("Firebase Auth Error: ${e.code} - ${e.message}");
+      return null;
+    } catch (e) {
+      print("Unexpected Error: $e");
       return null;
     }
   }
@@ -42,8 +42,11 @@ class FirebaseAuthService {
         password: password,
       );
       return result.user;
+    } on FirebaseAuthException catch (e) {
+      print("Firebase Auth Error: ${e.code} - ${e.message}");
+      return null;
     } catch (e) {
-      print("Error: $e");
+      print("Unexpected Error: $e");
       return null;
     }
   }

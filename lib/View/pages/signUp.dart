@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:study_flutter/View/pages/home_page.dart';
 import 'package:study_flutter/View/pages/upload_screen.dart';
 
 import '../../Data/services/firebase_auth_services.dart';
@@ -95,7 +96,7 @@ class _SignUpState extends State<SignUp> {
      );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UploadScreen()),
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error Ocurred"),

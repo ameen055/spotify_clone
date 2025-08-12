@@ -17,22 +17,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         width: 120, // Control image width
         child: Image.asset('assets/Vector.jpg', fit: BoxFit.contain),
       ),
-      leading: IconButton(
-        padding: EdgeInsets.only(left: 30.0),
-        icon: Icon(Icons.search),
-        onPressed: () async {
-          final snapshot = await FirebaseFirestore.instance
-              .collection('audios')
-              .get();
-
-          final songs = snapshot.docs.map((doc) {
-            return Audios.fromFirestore(doc.data());
-          }).toList();
-
-          // to open search
-          showSearch(context: context, delegate: SearchWidget(songs));
-        },
-      ),
       actions: <Widget>[
         IconButton(
           padding: EdgeInsets.only(right: 30),

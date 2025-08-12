@@ -57,9 +57,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
 
     if (_currentUrl == url && player.playing) {
       await player.pause();
-      setState(() {
-        _toPlayUrl = null;
-      });
+      setState(() => _toPlayUrl = null);
     } else {
       for (var entry in _players.entries) {
         if (entry.key != url) {
@@ -72,9 +70,18 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         _toPlayUrl = url;
       });
 
-      await player.play();
+      try {
+        if (player.processingState == ProcessingState.idle) {
+          await player.setUrl(url);
+        }
+        await player.play();
+      } catch (e) {
+        print("Play error: $e");
+        setState(() => _toPlayUrl = null);
+      }
     }
   }
+
 
   @override
   void initState() {

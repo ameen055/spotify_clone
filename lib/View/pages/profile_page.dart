@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'editprofile.dart';
 import 'favourites.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -31,6 +29,10 @@ class ProfilePageState extends State<ProfilePage> {
         });
       }
     }
+  }
+
+  void _signUserOut() {
+    FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -90,27 +92,19 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               child: ListView(
                 children: [
-                  _buildStyledButton(Icons.person, "Edit Profile", () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditProfilePage(),
-                      ), // Navigate to Favorite Page
-                    );
-                  }),
                   _buildStyledButton(Icons.language, "Language", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => FavoritesPage()),
                     );
                   }),
-                  _buildStyledButton(Icons.help,"Help Center", () {
+                  _buildStyledButton(Icons.help, "Help Center", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => FavoritesPage()),
                     );
                   }),
-                  _buildStyledButton(Icons.login_outlined,"Logout", () {
+                  _buildStyledButton(Icons.login_outlined, "Logout", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => FavoritesPage()),
@@ -119,6 +113,12 @@ class ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _signUserOut,
+            child: const Text("Sign Out"),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
           ),
         ],
       ),

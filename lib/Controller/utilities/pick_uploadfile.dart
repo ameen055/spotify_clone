@@ -3,36 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:study_flutter/View/pages/profile_page.dart';
-import 'package:study_flutter/View/widgets/home_widget/appbar.dart';
-import 'package:study_flutter/View/widgets/home_widget/hero_card.dart';
-import 'package:study_flutter/View/widgets/home_widget/nav_bar.dart';
 import '../../Data/model/audios_model.dart';
-import '../widgets/home_widget/albums.dart';
-import '../widgets/home_widget/playlist.dart';
-import 'favourites.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  _SignInState createState() => _SignInState();
-}
-
-class _SignInState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  List<Widget> get _pages => [
-    homeBodyWidget(),
-    FavoritesPage(),
-    FavoritesPage(),
-    FavoritesPage(),
-    ProfilePage(),
-  ];
 
 
-
-
+class UploadService {
   final storageRef = FirebaseStorage.instance.ref();
 
   Future<void> uploadSong(Audios newAudio) async {
@@ -43,8 +17,8 @@ class _SignInState extends State<HomePage> {
     audiosColRef.add(newAudio.toMap());
   }
 
-  // Upload audio file to Firebase
-  Future<void> pickAndUploadFile() async {
+// Upload audio file to Firebase
+  Future<void> pickAndUploadFile(BuildContext context) async {
     print("pick audio");
 
     // Pick audio using the File picker
@@ -108,57 +82,5 @@ class _SignInState extends State<HomePage> {
     } catch (e) {
       print("Error uploading: $e");
     }
-  }
-
-  // Open file picker and let the user choose an audio file.
-  //  also added the cover image to pick
-  // Get the file and its name.
-  //
-  // Create a path in Firebase Storage (audios/filename.mp3).
-  //
-  // Upload the file to that path.
-  //
-  // Get the download URL from Firebase Storage.
-  //
-  // Save that URL into Firestore as a document in the audios collection.
-  //
-  // Show a success message.
-  //
-  // If anything goes wrong, print the error.
-  //   late TabController _tabController;
-  //
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWidget(),
-      backgroundColor: Color(0xffffffff),
-      body: _pages[_selectedIndex],
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   shape: CircleBorder(),
-      //   onPressed: pickAndUploadFile,
-      //   backgroundColor: Color(0xff000000),
-      //   child: const Icon(Icons.add, color: Color(0xffffffff)),
-      // ),
-      bottomNavigationBar: BottomNavWidget(
-        selectedIndex: _selectedIndex,
-        onTabSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
-    );
-  }
-  Widget homeBodyWidget() {
-    return ListView(
-      children: [
-        HeroCardWidget(),
-        SizedBox(height: 15),
-        AlbumWidget(),
-        SizedBox(height: 15),
-        PlayListsWidget(),
-      ],
-    );
   }
 }
