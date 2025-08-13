@@ -16,22 +16,13 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _SignInState createState() => _SignInState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _SignInState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  List<Widget> get _pages => [
-    homeBodyWidget(),
-    FavoritesPage(),
-    FavoritesPage(),
-    FavoritesPage(),
-    ProfilePage(),
-  ];
-
-
-
+  List<Widget> get _pages => [homeBodyWidget()];
 
   final storageRef = FirebaseStorage.instance.ref();
 
@@ -96,7 +87,7 @@ class _SignInState extends State<HomePage> {
         // 2 text
         title: '',
         artist: '',
-        duration: '',
+        duration: '', id: '',
       );
 
       // Save to Firestore
@@ -150,6 +141,7 @@ class _SignInState extends State<HomePage> {
       ),
     );
   }
+
   Widget homeBodyWidget() {
     return ListView(
       children: [

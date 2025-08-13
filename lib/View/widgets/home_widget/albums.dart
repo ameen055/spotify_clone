@@ -32,7 +32,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         .get();
     // convert each doc to an audios object using firestore
     final audios = snapshot.docs
-        .map((doc) => Audios.fromFirestore(doc.data()))
+        .map((doc) => Audios.fromFirestore(doc.data(), docId: ''))
         .toList();
 
     // for preloading the audio

@@ -70,7 +70,7 @@ class UploadService {
         // 2 text
         title: '',
         artist: '',
-        duration: '',
+        duration: '', id: '',
       );
 
       // Save to Firestore

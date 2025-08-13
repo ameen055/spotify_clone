@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:study_flutter/View/pages/favourites.dart';
+import 'package:study_flutter/View/pages/profile_page.dart';
 import '../../../Controller/utilities/pick_uploadfile.dart';
 import '../../../Data/model/audios_model.dart';
 import 'search.dart'; // Your SearchWidget
@@ -28,7 +30,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
         .get();
 
     final songs = snapshot.docs.map((doc) {
-      return Audios.fromFirestore(doc.data());
+      return Audios.fromFirestore(doc.data(), docId: '');
     }).toList();
 
     showSearch(context: context, delegate: SearchWidget(songs));
@@ -73,10 +75,14 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
         } else if (index == 2) {
           // Add → pick and upload file
           await uploadService.pickAndUploadFile(context);
-        } else {
-          widget.onTabSelected(index);
-        }
-      },
+        } else if  (index == 3){
+          Navigator.push(context, MaterialPageRoute(builder: (_) => FavouritePage()),
+    );
+        } else if (index == 4){
+        Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()),
+        );
+      }
+        },
     );
   }
 }

@@ -11,22 +11,27 @@ class PlayListsWidget extends StatefulWidget {
 }
 
 class _PlayListsWidgetState extends State<PlayListsWidget> {
+  Set<String> _favouritedIds = {};
   final AudioPlayer _player = AudioPlayer();
   String? _currentUrl;
+  late Future<List<Audios>> _audiosFuture; // store future so it doesn't reload
 
   Future<List<Audios>> fetchAudios() async {
-    final snapshot = await FirebaseFirestore.instance.collection('audios').get();
-    return snapshot.docs.map((doc) => Audios.fromFirestore(doc.data())).toList();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('audios')
+        .get();
+    return snapshot.docs
+        .map((doc) => Audios.fromFirestore(doc.data(), docId: doc.id))
+        .toList();
   }
 
   Future<void> _togglePlayPause(String url) async {
     if (_currentUrl == url && _player.playing) {
-      // Stop fully to release resources and avoid mute spam
       await _player.stop();
       _currentUrl = null;
     } else {
       if (_currentUrl != url) {
-        await _player.stop(); // Ensure previous audio is stopped
+        await _player.stop();
         await _player.setUrl(url);
         _currentUrl = url;
       }
@@ -38,6 +43,7 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
   @override
   void initState() {
     super.initState();
+    _audiosFuture = fetchAudios(); // fetch only once
     _player.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed) {
         _player.stop();
@@ -62,7 +68,11 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
           padding: EdgeInsets.only(left: 32.0, top: 8.0),
           child: Text(
             "Playlist",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff222222)),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff222222),
+            ),
           ),
         ),
         const SizedBox(height: 10),
@@ -72,7 +82,7 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: FutureBuilder<List<Audios>>(
-              future: fetchAudios(),
+              future: _audiosFuture, // use stored future
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -88,12 +98,14 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                   itemCount: audios.length,
                   itemBuilder: (context, index) {
                     final song = audios[index];
-
                     return Center(
                       child: Container(
                         height: 70,
                         width: 360,
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -114,7 +126,10 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(image: NetworkImage(song.coverUrl), fit: BoxFit.cover),
+                                image: DecorationImage(
+                                  image: NetworkImage(song.coverUrl),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               child: IconButton(
                                 icon: Icon(
@@ -135,9 +150,39 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
-                            Text(song.duration, style: const TextStyle(fontSize: 20)),
+                            Text(
+                              song.duration,
+                              style: const TextStyle(fontSize: 20),
+                            ),
                             const SizedBox(width: 25),
-                            const Icon(Icons.favorite_outline_outlined, color: Color(0xffb4b4b4)),
+                            IconButton(
+                              icon: Icon(
+                                _favouritedIds.contains(song.id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline_outlined,
+                                color: _favouritedIds.contains(song.id)
+                                    ? Colors.red
+                                    : Colors.grey,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (_favouritedIds.contains(song.id)) {
+                                    _favouritedIds.remove(song.id);
+                                  } else {
+                                    _favouritedIds.add(song.id);
+                                  }
+                                });
+                                FirebaseFirestore.instance
+                                    .collection('audios')
+                                    .doc(song.id)
+                                    .update({
+                                      'isFavourite': _favouritedIds.contains(
+                                        song.id,
+                                      ),
+                                    });
+                              },
+                            ),
                           ],
                         ),
                       ),

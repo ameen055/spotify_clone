@@ -95,19 +95,19 @@ class ProfilePageState extends State<ProfilePage> {
                   _buildStyledButton(Icons.language, "Language", () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FavoritesPage()),
+                      MaterialPageRoute(builder: (context) => FavouritePage()),
                     );
                   }),
                   _buildStyledButton(Icons.help, "Help Center", () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FavoritesPage()),
+                      MaterialPageRoute(builder: (context) => FavouritePage()),
                     );
                   }),
                   _buildStyledButton(Icons.login_outlined, "Logout", () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FavoritesPage()),
+                      MaterialPageRoute(builder: (context) => FavouritePage()),
                     );
                   }),
                 ],

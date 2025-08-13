@@ -120,7 +120,7 @@ class _UploadScreenState extends State<UploadScreen> {
           title: '',
           coverUrl: '',
           artist: '',
-          duration: '',
+          duration: '', id: '',
         );
 
         // upload the audio model to firestore
