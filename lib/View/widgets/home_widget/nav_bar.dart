@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_flutter/View/pages/favourites.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:study_flutter/View/pages/profile_page.dart';
 import '../../../Controller/utilities/pick_uploadfile.dart';
 import '../../../Data/model/audios_model.dart';
@@ -23,7 +23,6 @@ class BottomNavWidget extends StatefulWidget {
 class _BottomNavWidgetState extends State<BottomNavWidget> {
   final uploadService = UploadService();
 
-
   Future<void> _openSearch(BuildContext context) async {
     final snapshot = await FirebaseFirestore.instance
         .collection('audios')
@@ -40,49 +39,47 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: const Color(0xff42c83c),
+      backgroundColor: const Color(0xffffffff),
       currentIndex: widget.selectedIndex,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white70,
+      selectedItemColor: Colors.blue.shade500,
+      unselectedItemColor: Colors.black12,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
+          icon: FaIcon(FontAwesomeIcons.house), // instead of Icons.home
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
+          icon: FaIcon(
+            FontAwesomeIcons.magnifyingGlass,
+          ), // instead of Icons.search
           label: 'Search',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add),
+          icon: FaIcon(FontAwesomeIcons.plus), // instead of Icons.add
           label: 'Add',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
+          icon: FaIcon(FontAwesomeIcons.heart), // instead of Icons.favorite
           label: 'Favorites',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: FaIcon(FontAwesomeIcons.user), // instead of Icons.person
           label: 'Profile',
         ),
       ],
-      onTap: (index) async {
-        if (index == 1) {
-          // Search
-          await _openSearch(context);
-        } else if (index == 2) {
-          // Add → pick and upload file
-          await uploadService.pickAndUploadFile(context);
-        } else if  (index == 3){
-          Navigator.push(context, MaterialPageRoute(builder: (_) => FavouritePage()),
-    );
-        } else if (index == 4){
-        Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()),
-        );
-      }
-        },
+        onTap: (index) async {
+          widget.onTabSelected(index);
+
+          if (index == 1) {
+            await _openSearch(context);
+          } else if (index == 2) {
+            await uploadService.pickAndUploadFile(context);
+          }
+          // No more Navigator.push for index 3 or 4
+        }
+
     );
   }
 }

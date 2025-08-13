@@ -117,9 +117,10 @@ class ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _signUserOut,
-            child: const Text("Sign Out"),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+            child: const Text("Sign Out"),
           ),
+
         ],
       ),
     );

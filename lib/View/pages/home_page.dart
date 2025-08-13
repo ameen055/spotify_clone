@@ -22,8 +22,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  List<Widget> get _pages => [homeBodyWidget()];
-
+  List<Widget> get _pages => [
+    homeBodyWidget(),
+    Container(), // Search will use showSearch, so placeholder
+    Container(), // Add will be handled separately
+    FavouritePage(),
+    ProfilePage(),
+  ];
   final storageRef = FirebaseStorage.instance.ref();
 
   Future<void> uploadSong(Audios newAudio) async {
@@ -121,7 +126,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(),
+      // appBar: AppBarWidget(),
       backgroundColor: Color(0xffffffff),
       body: _pages[_selectedIndex],
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
@@ -131,12 +136,12 @@ class _HomePageState extends State<HomePage> {
       //   backgroundColor: Color(0xff000000),
       //   child: const Icon(Icons.add, color: Color(0xffffffff)),
       // ),
-      bottomNavigationBar: BottomNavWidget(
-        selectedIndex: _selectedIndex,
-        onTabSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+        bottomNavigationBar: BottomNavWidget(
+          selectedIndex: _selectedIndex,
+          onTabSelected: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
         },
       ),
     );
@@ -145,6 +150,7 @@ class _HomePageState extends State<HomePage> {
   Widget homeBodyWidget() {
     return ListView(
       children: [
+        SizedBox(height: 20),
         HeroCardWidget(),
         SizedBox(height: 15),
         AlbumWidget(),

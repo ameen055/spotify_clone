@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc:
   shared_preferences:
   flutter_animate:
+  font_awesome_flutter:
 
 
 
