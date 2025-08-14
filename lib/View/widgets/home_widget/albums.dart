@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:study_flutter/View/pages/now_playing.dart';
 import '../../../Data/model/audios_model.dart';
 
 class AlbumWidget extends StatefulWidget {
@@ -16,7 +17,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
   String? _toPlayUrl;
 
   // Static cache so it persists even if widget is rebuilt
-  static List<Audios> _cachedAudios = [];
+  static List<Audios> _Audios = [];
   static bool _hasLoaded = false;
 
   bool _isLoading = false;
@@ -52,7 +53,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
       }
 
       setState(() {
-        _cachedAudios = audios;
+        _Audios = audios;
         _hasLoaded = true;
         _isLoading = false;
       });
@@ -112,7 +113,8 @@ class _AlbumWidgetState extends State<AlbumWidget> {
             child: Text(
               "Albums",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontFamily: "Satoshi",
+                fontWeight: FontWeight.w700,
                 color: Color(0xff222222),
                 fontSize: 20,
               ),
@@ -124,79 +126,84 @@ class _AlbumWidgetState extends State<AlbumWidget> {
           height: 160,
           child: _isLoading
               ? const Center(child: CircularProgressIndicator())
-              : _cachedAudios.isEmpty
+              : _Audios.isEmpty
               ? const Center(child: Text("No songs found"))
               : ListView.separated(
             padding: const EdgeInsets.only(left: 32.0),
             scrollDirection: Axis.horizontal,
-            itemCount: _cachedAudios.length,
+            itemCount: _Audios.length,
             separatorBuilder: (context, index) =>
             const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final song = _cachedAudios[index];
+              final song = _Audios[index];
               final isPlaying = _toPlayUrl == song.url;
 
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 120,
-                      width: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade300,
-                            blurRadius: 6,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: Image.network(
-                              song.coverUrl,
-                              height: 120,
-                              width: 160,
-                              fit: BoxFit.cover,
-                              errorBuilder:
-                                  (context, error, stackTrace) {
-                                return Container(
-                                  height: 120,
-                                  color: Colors.grey[300],
-                                  child: const Icon(
-                                      Icons.broken_image),
-                                );
-                              },
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => NowPlayingScreen()));
+                      },
+                      child: Container(
+                        height: 120,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 6,
+                              offset: const Offset(2, 2),
                             ),
-                          ),
-                          Positioned(
-                            bottom: 6,
-                            right: 6,
-                            child: InkWell(
-                              onTap: () =>
-                                  _togglePlayPause(song.url),
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xff808080),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow_rounded,
-                                  size: 20,
-                                  color: const Color(0xff000000),
+                          ],
+                        ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Image.network(
+                                song.coverUrl,
+                                height: 120,
+                                width: 160,
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (context, error, stackTrace) {
+                                  return Container(
+                                    height: 120,
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                        Icons.broken_image),
+                                  );
+                                },
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 6,
+                              right: 6,
+                              child: InkWell(
+                                onTap: () =>
+                                    _togglePlayPause(song.url),
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xff808080),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow_rounded,
+                                    size: 20,
+                                    color: const Color(0xff000000),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 6),

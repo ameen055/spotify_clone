@@ -42,6 +42,7 @@ dependencies:
   shared_preferences:
   flutter_animate:
   font_awesome_flutter:
+  audio_video_progress_bar:
 
 
 
@@ -87,11 +88,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Satoshi
+      fonts:
+         - asset: assets/fonts/Satoshi-Variable.ttf
+         - asset: assets/fonts/Satoshi-Variableitalic.ttf
+           weight: 700
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

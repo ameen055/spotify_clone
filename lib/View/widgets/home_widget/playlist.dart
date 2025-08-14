@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../../Data/model/audios_model.dart';
+import '../../pages/now_playing.dart';
 
 class PlayListsWidget extends StatefulWidget {
   const PlayListsWidget({super.key});
@@ -69,8 +70,9 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
           child: Text(
             "Playlist",
             style: TextStyle(
+              fontFamily: 'Satoshi',
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: Color(0xff222222),
             ),
           ),
@@ -99,91 +101,96 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                   itemBuilder: (context, index) {
                     final song = audios[index];
                     return Center(
-                      child: Container(
-                        height: 70,
-                        width: 360,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(17),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 6,
-                              offset: const Offset(2, 2),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                  image: NetworkImage(song.coverUrl),
-                                  fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => NowPlayingScreen()));
+                        },
+                        child: Container(
+                          height: 70,
+                          width: 360,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 8,
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(17),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                blurRadius: 6,
+                                offset: const Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    image: NetworkImage(song.coverUrl),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    _currentUrl == song.url && _player.playing
+                                        ? Icons.pause
+                                        : Icons.play_arrow_rounded,
+                                    color: Colors.white,
+                                    size: 25,
+                                  ),
+                                  onPressed: () => _togglePlayPause(song.url),
                                 ),
                               ),
-                              child: IconButton(
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  song.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              Text(
+                                song.duration,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              const SizedBox(width: 25),
+                              IconButton(
                                 icon: Icon(
-                                  _currentUrl == song.url && _player.playing
-                                      ? Icons.pause
-                                      : Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                  size: 25,
+                                  _favouritedIds.contains(song.id)
+                                      ? Icons.favorite
+                                      : Icons.favorite_outline_outlined,
+                                  color: _favouritedIds.contains(song.id)
+                                      ? Colors.red
+                                      : Colors.grey,
+                                  size: 30,
                                 ),
-                                onPressed: () => _togglePlayPause(song.url),
+                                onPressed: () {
+                                  setState(() {
+                                    if (_favouritedIds.contains(song.id)) {
+                                      _favouritedIds.remove(song.id);
+                                    } else {
+                                      _favouritedIds.add(song.id);
+                                    }
+                                  });
+                                  FirebaseFirestore.instance
+                                      .collection('audios')
+                                      .doc(song.id)
+                                      .update({
+                                        'isFavourite': _favouritedIds.contains(
+                                          song.id,
+                                        ),
+                                      });
+                                },
                               ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                song.title,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            Text(
-                              song.duration,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            const SizedBox(width: 25),
-                            IconButton(
-                              icon: Icon(
-                                _favouritedIds.contains(song.id)
-                                    ? Icons.favorite
-                                    : Icons.favorite_outline_outlined,
-                                color: _favouritedIds.contains(song.id)
-                                    ? Colors.red
-                                    : Colors.grey,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  if (_favouritedIds.contains(song.id)) {
-                                    _favouritedIds.remove(song.id);
-                                  } else {
-                                    _favouritedIds.add(song.id);
-                                  }
-                                });
-                                FirebaseFirestore.instance
-                                    .collection('audios')
-                                    .doc(song.id)
-                                    .update({
-                                      'isFavourite': _favouritedIds.contains(
-                                        song.id,
-                                      ),
-                                    });
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
