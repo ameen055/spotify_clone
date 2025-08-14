@@ -103,8 +103,13 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                     return Center(
                       child: InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => NowPlayingScreen()));
-                        },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NowPlayingScreen(audio: song),
+                            ),
+                          );
+                          },
                         child: Container(
                           height: 70,
                           width: 360,
@@ -191,8 +196,9 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                               ),
                             ],
                           ),
-                        ),
-                      ),
+
+                    )
+                      )
                     );
                   },
                 );

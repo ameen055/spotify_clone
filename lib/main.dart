@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                   return Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasData) {
-                  return NowPlayingScreen(); // Already logged in
+                  return HomePage(); // Already logged in
                 }
                 return StartedPage(); // Not logged in
               },

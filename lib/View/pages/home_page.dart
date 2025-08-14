@@ -126,7 +126,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBarWidget(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("muSify",style: TextStyle(fontFamily: 'Satoshi'),),
+      ),
       backgroundColor: Color(0xffffffff),
       body: _pages[_selectedIndex],
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,

@@ -144,7 +144,12 @@ class _AlbumWidgetState extends State<AlbumWidget> {
                   children: [
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => NowPlayingScreen()));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NowPlayingScreen(audio: song),
+                          ),
+                        );
                       },
                       child: Container(
                         height: 120,

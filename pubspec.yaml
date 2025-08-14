@@ -43,6 +43,7 @@ dependencies:
   flutter_animate:
   font_awesome_flutter:
   audio_video_progress_bar:
+  audio_session:
 
 
 
