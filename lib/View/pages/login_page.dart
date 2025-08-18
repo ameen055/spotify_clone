@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Data/services/firebase_auth_services.dart';
-import '../widgets/basic_appbar.dart';
-import '../widgets/signup/signin_up_wideget.dart';
+import '../widgets/home_widget/basic_appbar.dart';
+import '../widgets/signin_up_wideget.dart';
 import 'home_page.dart';
 
 

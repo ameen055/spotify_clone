@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rive/rive.dart';
 import '../../../Data/model/audios_model.dart';
 import '../../pages/now_playing.dart';
 
@@ -87,7 +88,12 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
               future: _audiosFuture, // use stored future
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: RiveAnimation.asset(
+                      'assets/new_file.riv ',
+                      fit: BoxFit.contain,
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Center(child: Text("Error: ${snapshot.error}"));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -102,14 +108,15 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                     final song = audios[index];
                     return Center(
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => NowPlayingScreen(audio: song),
+                              builder: (context) =>
+                                  NowPlayingScreen(audio: song),
                             ),
                           );
-                          },
+                        },
                         child: Container(
                           height: 70,
                           width: 360,
@@ -196,9 +203,8 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                               ),
                             ],
                           ),
-
-                    )
-                      )
+                        ),
+                      ),
                     );
                   },
                 );

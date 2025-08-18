@@ -44,6 +44,9 @@ dependencies:
   font_awesome_flutter:
   audio_video_progress_bar:
   audio_session:
+  rive:
+  lottie: ^3.3.1
+
 
 
 

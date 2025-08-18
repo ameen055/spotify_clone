@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rive/rive.dart' hide Image;
 import 'package:study_flutter/View/pages/now_playing.dart';
 import '../../../Data/model/audios_model.dart';
 
@@ -125,7 +126,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         SizedBox(
           height: 160,
           child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child:RiveAnimation.asset('assets/new_file.riv',fit: BoxFit.contain,))
               : _Audios.isEmpty
               ? const Center(child: Text("No songs found"))
               : ListView.separated(

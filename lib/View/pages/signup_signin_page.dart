@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/signUp.dart';
-import '../widgets/basic_appbar.dart';
+import '../widgets/home_widget/basic_appbar.dart';
 import 'login_page.dart';
 
 

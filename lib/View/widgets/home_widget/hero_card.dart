@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HeroCardWidget extends StatefulWidget{
+class HeroCardWidget extends StatefulWidget {
   const HeroCardWidget({super.key});
 
   @override
@@ -14,13 +14,13 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
   String name = "";
 
   void _fetchUser() async {
-    if (user != null){
+    if (user != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(user!.uid)
-      .get();
+          .collection('users')
+          .doc(user!.uid)
+          .get();
 
-      if (userDoc.exists){
+      if (userDoc.exists) {
         setState(() {
           name = userDoc['name'] ?? "";
         });
@@ -29,12 +29,13 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _fetchUser();
   }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Container(
@@ -42,12 +43,10 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
         width: 320,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-begin: Alignment.topCenter,
-end: Alignment.bottomCenter,
-              colors: [
-                Color(0xff0478ef),
-                Color(0xff4cc5fe),
-              ]),
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xff0478ef), Color(0xff4cc5fe)],
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(

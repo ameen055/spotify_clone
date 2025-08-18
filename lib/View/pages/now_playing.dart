@@ -141,7 +141,7 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                     ),
                   ],
                 ),
-              ],
+              ]  ,
             ),
           ),
         ],

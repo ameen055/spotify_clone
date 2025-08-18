@@ -4,7 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:study_flutter/View/pages/profile_page.dart';
 import '../../../Controller/utilities/pick_uploadfile.dart';
 import '../../../Data/model/audios_model.dart';
-import 'search.dart'; // Your SearchWidget
+import 'search.dart';
+
 
 class BottomNavWidget extends StatefulWidget {
   final Function(int) onTabSelected;

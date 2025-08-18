@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../pages/login_page.dart';
-import '../../pages/signUp.dart';
+import '../pages/login_page.dart';
+import '../pages/signUp.dart';
 
-// USED IN REGISTER THE APP
 
 // FULL NAME
 Widget fullNameField({required TextEditingController controller}) {

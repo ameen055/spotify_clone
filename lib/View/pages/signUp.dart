@@ -4,7 +4,7 @@ import 'package:study_flutter/View/pages/home_page.dart';
 import 'package:study_flutter/View/pages/upload_screen.dart';
 
 import '../../Data/services/firebase_auth_services.dart';
-import '../widgets/signup/signin_up_wideget.dart';
+import '../widgets/signin_up_wideget.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
