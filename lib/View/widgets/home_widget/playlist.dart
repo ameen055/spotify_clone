@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:rive/rive.dart';
 import '../../../Data/model/audios_model.dart';
+import '../../../Data/services/audio_service.dart';
 import '../../pages/now_playing.dart';
 
 class PlayListsWidget extends StatefulWidget {
@@ -14,30 +14,22 @@ class PlayListsWidget extends StatefulWidget {
 
 class _PlayListsWidgetState extends State<PlayListsWidget> {
   Set<String> _favouritedIds = {};
-  final AudioPlayer _player = AudioPlayer();
-  String? _currentUrl;
-  late Future<List<Audios>> _audiosFuture; // store future so it doesn't reload
+  final audioService = AudioService(); //  use shared service
+  late Future<List<Audios>> _audiosFuture;
 
   Future<List<Audios>> fetchAudios() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('audios')
-        .get();
+    final snapshot =
+    await FirebaseFirestore.instance.collection('audios').get();
     return snapshot.docs
         .map((doc) => Audios.fromFirestore(doc.data(), docId: doc.id))
         .toList();
   }
 
-  Future<void> _togglePlayPause(String url) async {
-    if (_currentUrl == url && _player.playing) {
-      await _player.stop();
-      _currentUrl = null;
+  Future<void> _togglePlayPause(Audios song) async {
+    if (audioService.currentSong?.id == song.id && audioService.isPlaying) {
+      await audioService.pause();
     } else {
-      if (_currentUrl != url) {
-        await _player.stop();
-        await _player.setUrl(url);
-        _currentUrl = url;
-      }
-      await _player.play();
+      await audioService.playSong(song);
     }
     setState(() {});
   }
@@ -46,19 +38,10 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
   void initState() {
     super.initState();
     _audiosFuture = fetchAudios(); // fetch only once
-    _player.playerStateStream.listen((state) {
-      if (state.processingState == ProcessingState.completed) {
-        _player.stop();
-        _currentUrl = null;
-        setState(() {});
-      }
+    //  listen to service state
+    audioService.player.playerStateStream.listen((state) {
+      setState(() {}); // rebuild UI when player state changes
     });
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
   }
 
   @override
@@ -85,12 +68,12 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: FutureBuilder<List<Audios>>(
-              future: _audiosFuture, // use stored future
+              future: _audiosFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: RiveAnimation.asset(
-                      'assets/new_file.riv ',
+                      'assets/new_file.riv',
                       fit: BoxFit.contain,
                     ),
                   );
@@ -151,13 +134,14 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                                 ),
                                 child: IconButton(
                                   icon: Icon(
-                                    _currentUrl == song.url && _player.playing
+                                    audioService.currentSong?.id == song.id &&
+                                        audioService.isPlaying
                                         ? Icons.pause
                                         : Icons.play_arrow_rounded,
                                     color: Colors.white,
                                     size: 25,
                                   ),
-                                  onPressed: () => _togglePlayPause(song.url),
+                                  onPressed: () => _togglePlayPause(song),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -195,10 +179,9 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                                       .collection('audios')
                                       .doc(song.id)
                                       .update({
-                                        'isFavourite': _favouritedIds.contains(
-                                          song.id,
-                                        ),
-                                      });
+                                    'isFavourite':
+                                    _favouritedIds.contains(song.id),
+                                  });
                                 },
                               ),
                             ],

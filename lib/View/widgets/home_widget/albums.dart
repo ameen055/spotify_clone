@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rive/rive.dart' hide Image;
@@ -37,9 +38,16 @@ class _AlbumWidgetState extends State<AlbumWidget> {
       final snapshot =
       await FirebaseFirestore.instance.collection('audios').get();
 
-      final audios = snapshot.docs
-          .map((doc) => Audios.fromFirestore(doc.data(), docId: ''))
-          .toList();
+      // Pass raw map data to isolate
+      final audios = await compute(
+        parseAudios,
+        snapshot.docs
+            .map((doc) => {
+          ...doc.data(),
+          'id': doc.id, //  ensure id is passed
+        })
+            .toList(),
+      );
 
       for (var song in audios) {
         if (!_players.containsKey(song.url)) {
@@ -48,7 +56,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
             await player.setUrl(song.url);
             _players[song.url] = player;
           } catch (e) {
-            print("Failed to preload ${song.url}: $e");
+            debugPrint("Failed to preload ${song.url}: $e");
           }
         }
       }
@@ -59,7 +67,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         _isLoading = false;
       });
     } catch (e) {
-      print("Error fetching audios: $e");
+      debugPrint("Error fetching audios: $e");
       setState(() => _isLoading = false);
     }
   }
@@ -89,7 +97,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         }
         await player.play();
       } catch (e) {
-        print("Play error: $e");
+        debugPrint("Play error: $e");
         setState(() => _toPlayUrl = null);
       }
     }
@@ -126,7 +134,11 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         SizedBox(
           height: 160,
           child: _isLoading
-              ? const Center(child:RiveAnimation.asset('assets/new_file.riv',fit: BoxFit.contain,))
+              ? const Center(
+              child: RiveAnimation.asset(
+                'assets/new_file.riv',
+                fit: BoxFit.contain,
+              ))
               : _Audios.isEmpty
               ? const Center(child: Text("No songs found"))
               : ListView.separated(
@@ -144,11 +156,12 @@ class _AlbumWidgetState extends State<AlbumWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NowPlayingScreen(audio: song),
+                            builder: (context) =>
+                                NowPlayingScreen(audio: song),
                           ),
                         );
                       },
@@ -203,7 +216,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
                                         ? Icons.pause
                                         : Icons.play_arrow_rounded,
                                     size: 20,
-                                    color: const Color(0xff000000),
+                                    color: Color(0xff000000),
                                   ),
                                 ),
                               ),
@@ -246,4 +259,9 @@ class _AlbumWidgetState extends State<AlbumWidget> {
       ],
     );
   }
+}
+List<Audios> parseAudios(List<Map<String, dynamic>> docs) {
+  return docs
+      .map((data) => Audios.fromFirestore(data, docId: data['id'] ?? ''))
+      .toList();
 }

@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_flutter/View/widgets/home_widget/search.dart';
 
-import '../../../Data/model/audios_model.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({super.key});

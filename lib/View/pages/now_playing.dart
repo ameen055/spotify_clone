@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:study_flutter/Data/services/audio_service.dart';
 
 import '../../Data/model/audios_model.dart';
 
@@ -12,8 +14,11 @@ class NowPlayingScreen extends StatefulWidget {
 }
 
 class NowPlayingScreenState extends State<NowPlayingScreen> {
+  final player = AudioPlayer();
+
   @override
   Widget build(BuildContext context) {
+    final audioService = AudioService();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -89,9 +94,17 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("0:00", style: TextStyle(color: Colors.grey)),
-                          Text("3:45", style: TextStyle(color: Colors.grey)),
+                        children: [
+                          Text(
+                            "0:00",
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            widget
+                                .audio
+                                .duration, // directly from Firestore model
+                            style: const TextStyle(color: Colors.grey),
+                          ),
                         ],
                       ),
                     ),
@@ -115,9 +128,22 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                         color: Color(0xff42c933),
                       ),
                       padding: const EdgeInsets.all(20),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: FaIcon(FontAwesomeIcons.play),
+                      child: StreamBuilder(
+                        stream: audioService.player.playerStateStream,
+                        builder: (context, snapshot) {
+                          final state = snapshot.data;
+                          final playing = state?.playing ?? false;
+                          return IconButton(
+                            icon: FaIcon( playing ? FontAwesomeIcons.pause: FontAwesomeIcons.play),
+                            onPressed: ()  {
+                              if(playing){
+                                 audioService.pause();
+                              } else {
+                                 audioService.playSong(widget.audio);
+                              }
+                            },
+                          );
+                        }
                       ),
                     ),
                     IconButton(
@@ -141,7 +167,7 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                     ),
                   ],
                 ),
-              ]  ,
+              ],
             ),
           ),
         ],
