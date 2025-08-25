@@ -92,7 +92,8 @@ class _HomePageState extends State<HomePage> {
         // 2 text
         title: '',
         artist: '',
-        duration: '', id: '',
+        duration: '',
+        id: '',
       );
 
       // Save to Firestore
@@ -128,7 +129,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("muSify",style: TextStyle(fontFamily: 'Satoshi'),),
+        title: Text("muSify", style: TextStyle(fontFamily: 'Satoshi')),
       ),
       backgroundColor: Color(0xffffffff),
       body: _pages[_selectedIndex],
@@ -139,27 +140,29 @@ class _HomePageState extends State<HomePage> {
       //   backgroundColor: Color(0xff000000),
       //   child: const Icon(Icons.add, color: Color(0xffffffff)),
       // ),
-        bottomNavigationBar: BottomNavWidget(
-          selectedIndex: _selectedIndex,
-          onTabSelected: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
+      bottomNavigationBar: BottomNavWidget(
+        selectedIndex: _selectedIndex,
+        onTabSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
         },
       ),
     );
   }
 
   Widget homeBodyWidget() {
-    return ListView(
-      children: [
-        SizedBox(height: 20),
-        HeroCardWidget(),
-        SizedBox(height: 15),
-        AlbumWidget(),
-        SizedBox(height: 15),
-        PlayListsWidget(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 20),
+          HeroCardWidget(),
+          SizedBox(height: 15),
+          AlbumWidget(),
+          SizedBox(height: 15),
+          PlayListsWidget(),
+        ],
+      ),
     );
   }
 }

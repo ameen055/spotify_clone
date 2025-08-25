@@ -78,7 +78,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
           } else if (index == 2) {
             await uploadService.pickAndUploadFile(context);
           }
-          // No more Navigator.push for index 3 or 4
+      
         }
 
     );

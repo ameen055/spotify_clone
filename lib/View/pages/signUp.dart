@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/home_page.dart';
-import 'package:study_flutter/View/pages/upload_screen.dart';
-
 import '../../Data/services/firebase_auth_services.dart';
 import '../widgets/signin_up_wideget.dart';
 
@@ -94,10 +92,7 @@ class _SignUpState extends State<SignUp> {
        SnackBar(content: Text("Created Account Successfully")
        ),
      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+     Navigator.pushNamed(context, '/signUp');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error Ocurred"),
       )

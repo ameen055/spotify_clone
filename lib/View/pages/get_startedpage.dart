@@ -60,7 +60,7 @@ class StartedPageState extends State<StartedPage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUpOrSIgnIn()));
+                    Navigator.pushNamed(context, '/startedPage');
                   },
                   child: Text("Get Started", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800)),
                   style: ElevatedButton.styleFrom(

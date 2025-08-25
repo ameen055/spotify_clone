@@ -78,10 +78,7 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.black,
       ),
      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      Navigator.pushNamed(context, '/signIn');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

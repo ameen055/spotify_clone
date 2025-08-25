@@ -1,21 +1,26 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:study_flutter/View/pages/get_startedpage.dart';
-import 'package:study_flutter/View/widgets/home_widget/nav_bar.dart';
+import 'package:study_flutter/View/pages/signup_signin_page.dart';
+import 'package:study_flutter/authTest.dart';
+
 import 'Controller/bloc/auth/auth_bloc.dart';
+import 'Data/model/audios_model.dart';
+import 'View/pages/get_startedpage.dart';
 import 'View/pages/home_page.dart';
 import 'View/pages/now_playing.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    MultiBlocProvider(providers: [
-      BlocProvider(create: (_) => AuthBloc()),
-      // BlocProvider(create: (_) => AudioPlayerBloc()),
-
-    ], child: MyApp())
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AuthBloc()),
+        // BlocProvider(create: (_) => AudioPlayerBloc()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 
@@ -25,20 +30,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: StreamBuilder<User?>(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasData) {
-                  return HomePage(); // Already logged in
-                }
-                return StartedPage(); // Not logged in
-              },
-            ),
-          );
+      debugShowCheckedModeBanner: false,
 
+      // Start with a splash/auth wrapper
+      initialRoute: '/authTest',
+
+      // Define all routes here
+      routes: {
+        '/authTest': (context) => AuthTest(),
+        '/home': (context) => HomePage(),
+        '/start': (context) => StartedPage(),
+        '/startedPage': (context) => SignUpOrSIgnIn(),
+        '/signIn': (context) => HomePage(),
+        '/signUp': (context) => HomePage(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/nowPlaying') {
+          final audio = settings.arguments as Audios; // Pass Audios object
+          return MaterialPageRoute(
+            builder: (context) => NowPlayingScreen(audio: audio),
+          );
+        }
+        return null;
+      },
+    );
   }
 }

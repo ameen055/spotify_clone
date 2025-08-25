@@ -85,13 +85,15 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
 
                 final audios = snapshot.data!;
                 return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemCount: audios.length,
                   itemBuilder: (context, index) {
                     final song = audios[index];
                     return Center(
                       child: InkWell(
-                        onTap: () {
+                        onTap: ( ) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(

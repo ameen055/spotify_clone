@@ -134,16 +134,20 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                           final state = snapshot.data;
                           final playing = state?.playing ?? false;
                           return IconButton(
-                            icon: FaIcon( playing ? FontAwesomeIcons.pause: FontAwesomeIcons.play),
-                            onPressed: ()  {
-                              if(playing){
-                                 audioService.pause();
+                            icon: FaIcon(
+                              playing
+                                  ? FontAwesomeIcons.pause
+                                  : FontAwesomeIcons.play,
+                            ),
+                            onPressed: () {
+                              if (playing) {
+                                audioService.pause();
                               } else {
-                                 audioService.playSong(widget.audio);
+                                audioService.playSong(widget.audio);
                               }
                             },
                           );
-                        }
+                        },
                       ),
                     ),
                     IconButton(
