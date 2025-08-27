@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_flutter/View/pages/signup_signin_page.dart';
-import 'package:study_flutter/authTest.dart';
+import 'package:study_flutter/Data/services/authTest.dart';
 
 import 'Controller/bloc/auth/auth_bloc.dart';
 import 'Data/model/audios_model.dart';

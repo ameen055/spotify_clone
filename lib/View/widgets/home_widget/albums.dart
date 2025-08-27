@@ -132,7 +132,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: 160,
+          height: 170,
           child: _isLoading
               ? const Center(
               child: RiveAnimation.asset(
@@ -142,6 +142,7 @@ class _AlbumWidgetState extends State<AlbumWidget> {
               : _Audios.isEmpty
               ? const Center(child: Text("No songs found"))
               : ListView.separated(
+            shrinkWrap: false,
             padding: const EdgeInsets.only(left: 32.0),
             scrollDirection: Axis.horizontal,
             itemCount: _Audios.length,

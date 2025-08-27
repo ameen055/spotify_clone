@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HeroCardWidget extends StatefulWidget {
   const HeroCardWidget({super.key});
@@ -42,7 +43,7 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
         height: 130,
         width: 320,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [Color(0xff0478ef), Color(0xff4cc5fe)],
@@ -51,38 +52,44 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
         ),
         child: Stack(
           children: [
-            // Left Text Section
             Positioned(
               left: 16,
               top: 20,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // const Text(
-                  //   "Hi,",
-                  //   style: TextStyle(fontSize: 19, color: Colors.white70),
-                  // ),
                   const SizedBox(height: 5),
+
                   Text(
                     "Hey $name 👋",
-
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ),
+                  )
+                      .animate()
+                      .fadeIn(duration: 600.ms)
+                      .slideX(begin: -0.2, end: 0, duration: 600.ms),
+
                   const SizedBox(height: 5),
+
                   const Text(
                     "What you want to here \ntoday?",
                     style: TextStyle(fontSize: 16, color: Colors.white70),
-                  ),
+                  )
+                      .animate()
+                      .fadeIn(duration: 800.ms)
+                      .slideY(begin: 0.2, end: 0, duration: 800.ms),
                 ],
               ),
             ),
           ],
         ),
-      ),
+      )
+          .animate()
+          .fadeIn(duration: 500.ms)
+          .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
     );
   }
 }

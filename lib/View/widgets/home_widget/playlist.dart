@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 import '../../../Data/model/audios_model.dart';
 import '../../../Data/services/audio_service.dart';
@@ -71,8 +72,8 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
               future: _audiosFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: RiveAnimation.asset(
+                  return Center(
+                    child: const RiveAnimation.asset(
                       'assets/new_file.riv',
                       fit: BoxFit.contain,
                     ),
