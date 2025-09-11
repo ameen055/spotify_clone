@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/home_page.dart';
 import '../../Data/services/firebase_auth_services.dart';
-import '../widgets/signin_up_wideget.dart';
+import '../widgets/signin_up_widget.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -10,7 +10,6 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
-
 class _SignUpState extends State<SignUp> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -32,7 +31,7 @@ class _SignUpState extends State<SignUp> {
       bottomNavigationBar: loginText(context),
       appBar: AppBar(
         centerTitle: true,
-        title: Image.asset('assets/Vector.jpg', fit: BoxFit.cover, height: 35),
+        title: Image.asset('assets/musify.png', fit: BoxFit.cover, height:140),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -54,7 +53,7 @@ class _SignUpState extends State<SignUp> {
               onPressed: _signUp,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.all(25),
-                backgroundColor: Color(0xff42C83C),
+                backgroundColor: Colors.black,
                 minimumSize: Size(332, 80),
               ),
               child: Text(

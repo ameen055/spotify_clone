@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../View/pages/get_startedpage.dart';
+import 'package:study_flutter/View/pages/splash_page.dart';
+import '../../View/pages/onboarding_page.dart';
 import '../../View/pages/home_page.dart';
 
-class AuthTest extends StatelessWidget {
-  const AuthTest({super.key});
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class AuthTest extends StatelessWidget {
         if (snapshot.hasData) {
           return HomePage(); // Already logged in
         }
-        return StartedPage(); // Not logged in
+        return SplashScreen(); // Not logged in
       },
     );
   }

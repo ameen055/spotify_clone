@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Data/services/firebase_auth_services.dart';
-import '../widgets/home_widget/basic_appbar.dart';
-import '../widgets/signin_up_wideget.dart';
+import '../widgets/home_widget/custom_appbar_widget.dart';
+import '../widgets/signin_up_widget.dart';
 import 'home_page.dart';
 
 
@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: signInText(context),
-      appBar: BasicAppBar(imagePath: 'assets/Vector.jpg',
+      appBar: BasicAppBar(imagePath: 'assets/musify.png',
       ),
       // appBar: AppBar(
       //   centerTitle: true,
@@ -42,7 +42,7 @@ class _SignInState extends State<SignIn> {
           ElevatedButton(onPressed:_signIn ,
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(25),
-              backgroundColor: Color(0xff42C83C),
+              backgroundColor: Colors.black,
               minimumSize: Size(332, 80),
             ),
             child: Text(

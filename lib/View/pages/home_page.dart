@@ -4,13 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/profile_page.dart';
-import 'package:study_flutter/View/widgets/home_widget/appbar.dart';
-import 'package:study_flutter/View/widgets/home_widget/hero_card.dart';
-import 'package:study_flutter/View/widgets/home_widget/nav_bar.dart';
 import '../../Data/model/audios_model.dart';
-import '../widgets/home_widget/albums.dart';
-import '../widgets/home_widget/playlist.dart';
-import 'favourites.dart';
+import '../widgets/home_widget/albums_widget.dart';
+import '../widgets/home_widget/hero_card_widget.dart';
+import '../widgets/home_widget/nav_bar_widget.dart';
+import '../widgets/home_widget/playlist_widget.dart';
+import 'favourites_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -133,13 +132,6 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Color(0xffffffff),
       body: _pages[_selectedIndex],
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   shape: CircleBorder(),
-      //   onPressed: pickAndUploadFile,
-      //   backgroundColor: Color(0xff000000),
-      //   child: const Icon(Icons.add, color: Color(0xffffffff)),
-      // ),
       bottomNavigationBar: BottomNavWidget(
         selectedIndex: _selectedIndex,
         onTabSelected: (index) {

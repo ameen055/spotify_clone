@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:study_flutter/View/pages/signUp.dart';
-import '../widgets/home_widget/basic_appbar.dart';
+import 'package:study_flutter/View/pages/signup_page.dart';
+import '../widgets/home_widget/custom_appbar_widget.dart';
 import 'login_page.dart';
 
 
@@ -12,9 +12,7 @@ class SignUpOrSIgnIn extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          BasicAppBar(imagePath: 'assets/Vector.jpg',
-          ),
-          Align(
+      Align(
             alignment: Alignment.topRight,
             child: Image.asset("assets/Union_asset.png"),
           ),
@@ -22,10 +20,7 @@ class SignUpOrSIgnIn extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: Image.asset("assets/Union2_asset.png"),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset("assets/billieelishsignup.png"),
-          ),
+
           Align(
             alignment: Alignment.center,
             child: Padding(
@@ -34,7 +29,7 @@ class SignUpOrSIgnIn extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset("assets/Vector.jpg",
+                  Image.asset("assets/musify.png",
                   height: 230,
                   width: 230,
                   ),
@@ -59,7 +54,7 @@ class SignUpOrSIgnIn extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
                           },
                          style: ElevatedButton.styleFrom(
-                             backgroundColor: Colors.green,
+                             backgroundColor: Colors.black,
                            minimumSize: Size(130, 70),
                          ),
                           child: Text("Register",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.white),),
@@ -72,7 +67,7 @@ class SignUpOrSIgnIn extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           minimumSize: Size(130, 70),
                         ),
-                          child: Text("Sign In",style: TextStyle(
+                          child: Text("Sign In",style: TextStyle(color: Colors.black,
                               fontSize: 17,fontWeight: FontWeight.bold,),),
                       ),
                     ],

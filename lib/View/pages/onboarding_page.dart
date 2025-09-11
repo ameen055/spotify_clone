@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:study_flutter/View/pages/signup_signin_page.dart';
-
 
 class StartedPage extends StatefulWidget {
   const StartedPage({super.key});
@@ -13,46 +11,34 @@ class StartedPageState extends State<StartedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/starter.png'),
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          Container(color: Colors.black.withOpacity(0.15)
-          ),
+          Container(color: Colors.black.withOpacity(0.15)),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 40,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.topCenter,
-                  child: Image.asset('assets/Vector.jpg'),
+                  child: Image.asset('assets/musify.png'),
                 ),
                 Spacer(),
                 Text(
                   "Enjoy Listening to Music",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 18,
                   ),
                 ),
                 SizedBox(height: 21),
                 Text(
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis "
-                      "enim purus sed phasellus. Cursus ornare id scelerisque aliquam.",
+                  "enim purus sed phasellus. Cursus ornare id scelerisque aliquam.",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey.shade400,
+                    color: Colors.black,
                     fontSize: 13,
                   ),
                   textAlign: TextAlign.center,
@@ -62,10 +48,13 @@ class StartedPageState extends State<StartedPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/startedPage');
                   },
-                  child: Text("Get Started", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800)),
+                  child: Text(
+                    "Get Started",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  ),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Color(0xff42C83C),
+                    backgroundColor: Colors.black,
                     minimumSize: Size(250, 70),
                   ),
                 ),

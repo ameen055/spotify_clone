@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 import '../../../Data/model/audios_model.dart';
 import '../../../Data/services/audio_service.dart';
-import '../../pages/now_playing.dart';
+import '../../pages/nowplaying_page.dart';
 
 class PlayListsWidget extends StatefulWidget {
   const PlayListsWidget({super.key});

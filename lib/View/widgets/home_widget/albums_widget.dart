@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rive/rive.dart' hide Image;
-import 'package:study_flutter/View/pages/now_playing.dart';
 import '../../../Data/model/audios_model.dart';
+import '../../pages/nowplaying_page.dart';
 
 class AlbumWidget extends StatefulWidget {
   const AlbumWidget({super.key});

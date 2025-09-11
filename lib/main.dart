@@ -2,13 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_flutter/View/pages/signup_signin_page.dart';
-import 'package:study_flutter/Data/services/authTest.dart';
-
 import 'Controller/bloc/auth/auth_bloc.dart';
+import 'Controller/bloc/player/player_bloc.dart';
 import 'Data/model/audios_model.dart';
-import 'View/pages/get_startedpage.dart';
+import 'Data/services/authgate.dart';
 import 'View/pages/home_page.dart';
-import 'View/pages/now_playing.dart';
+import 'View/pages/nowplaying_page.dart';
+import 'View/pages/onboarding_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthBloc()),
-        // BlocProvider(create: (_) => AudioPlayerBloc()),
+        BlocProvider(create: (_) => PlayerBloc()),
       ],
       child: MyApp(),
     ),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
       // Define all routes here
       routes: {
-        '/authTest': (context) => AuthTest(),
+        '/authTest': (context) => AuthGate(),
         '/home': (context) => HomePage(),
         '/start': (context) => StartedPage(),
         '/startedPage': (context) => SignUpOrSIgnIn(),

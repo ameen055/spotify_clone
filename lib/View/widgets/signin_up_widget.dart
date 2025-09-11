@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/login_page.dart';
-import '../pages/signUp.dart';
+import '../pages/signup_page.dart';
 
 
 // FULL NAME

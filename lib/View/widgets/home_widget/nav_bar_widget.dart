@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:study_flutter/View/pages/profile_page.dart';
 import '../../../Controller/utilities/pick_uploadfile.dart';
 import '../../../Data/model/audios_model.dart';
-import 'search.dart';
+import 'search_widget.dart';
 
 
 class BottomNavWidget extends StatefulWidget {
