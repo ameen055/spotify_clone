@@ -1,5 +1,14 @@
-abstract class PlayerEvent {}
+import '../../../Data/model/audios_model.dart';
 
-class PlayEvent extends PlayerEvent {}
+abstract class AudioEvent {}
 
-class PauseEvent extends PlayerEvent {}
+class PlayAudio extends AudioEvent {
+  final Audios song;
+  PlayAudio(this.song);
+}
+
+class PauseAudio extends AudioEvent {}
+
+class ResumeAudio extends AudioEvent {}
+
+class StopAudio extends AudioEvent {}

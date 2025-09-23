@@ -1,15 +1,40 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_flutter/Controller/bloc/player/player_event.dart';
 import 'package:study_flutter/Controller/bloc/player/player_state.dart';
+import '../../../Data/services/audio_service.dart';
+import '../../../Data/model/audios_model.dart';
 
-class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
-  PlayerBloc() : super(PlayerInitial()) {
-    on<PlayEvent>((event, emit) {
-      emit(PlayerPlaying());
+class AudioBloc extends Bloc<AudioEvent, AudioState> {
+  final AudioService _audioService = AudioService();
+
+  AudioBloc() : super(AudioInitial()) {
+    // Play
+    on<PlayAudio>((event, emit) async {
+      await _audioService.playSong(event.song);
+      emit(AudioPlaying(event.song));
     });
 
-    on<PauseEvent>((event, emit) {
-      emit(PlayerPaused());
+    // Pause
+    on<PauseAudio>((event, emit) async {
+      await _audioService.pause();
+      if (state is AudioPlaying) {
+        emit(AudioPaused((state as AudioPlaying).song));
+      }
+    });
+
+    // Resume
+    on<ResumeAudio>((event, emit) async {
+      if (state is AudioPaused) {
+        final song = (state as AudioPaused).song;
+        await _audioService.playSong(song); // resume same song
+        emit(AudioPlaying(song));
+      }
+    });
+
+    // Stop
+    on<StopAudio>((event, emit) async {
+      await _audioService.stop();
+      emit(AudioStopped());
     });
   }
 }

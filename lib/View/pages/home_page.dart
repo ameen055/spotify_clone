@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/profile_page.dart';
+import 'package:study_flutter/View/widgets/home_widget/custom_appbar_widget.dart';
 import '../../Data/model/audios_model.dart';
 import '../widgets/home_widget/albums_widget.dart';
 import '../widgets/home_widget/hero_card_widget.dart';
@@ -127,8 +128,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Image.asset('assets/musify.png', fit: BoxFit.cover,height: 140,),
         centerTitle: true,
-        title: Text("muSify", style: TextStyle(fontFamily: 'Satoshi')),
       ),
       backgroundColor: Color(0xffffffff),
       body: _pages[_selectedIndex],

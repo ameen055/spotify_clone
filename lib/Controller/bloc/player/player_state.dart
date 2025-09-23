@@ -1,7 +1,17 @@
-abstract class PlayerState {}
+import '../../../Data/model/audios_model.dart';
 
-class PlayerInitial extends PlayerState {}
+abstract class AudioState {}
 
-class PlayerPlaying extends PlayerState {}
+class AudioInitial extends AudioState {}
 
-class PlayerPaused extends PlayerState {}
+class AudioPlaying extends AudioState {
+  final Audios song;
+  AudioPlaying(this.song);
+}
+
+class AudioPaused extends AudioState {
+  final Audios song;
+  AudioPaused(this.song);
+}
+
+class AudioStopped extends AudioState {}

@@ -48,6 +48,7 @@ class _SignInState extends State<SignIn> {
             child: Text(
               "Sign In",
               style: TextStyle(
+                fontFamily: "Satoshi",
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 color: Colors.white,
@@ -62,7 +63,7 @@ class _SignInState extends State<SignIn> {
   Widget _signIntext() {
     return const Text(
       'Sign In',
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+      style: TextStyle(fontFamily: "Satoshi",fontWeight: FontWeight.bold, fontSize: 30),
     );
   }
   Future<void> _signIn() async {

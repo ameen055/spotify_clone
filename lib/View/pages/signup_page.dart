@@ -59,6 +59,7 @@ class _SignUpState extends State<SignUp> {
               child: Text(
                 "Create Account",
                 style: TextStyle(
+                  fontFamily: "Satoshi",
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Colors.white,
@@ -74,7 +75,7 @@ class _SignUpState extends State<SignUp> {
   Widget _registerText() {
     return const Text(
       'Register',
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+      style: TextStyle(fontFamily: "Satoshi",fontWeight: FontWeight.bold, fontSize: 30),
     );
 
 

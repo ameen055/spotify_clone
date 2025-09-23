@@ -15,12 +15,11 @@ class PlayListsWidget extends StatefulWidget {
 
 class _PlayListsWidgetState extends State<PlayListsWidget> {
   Set<String> _favouritedIds = {};
-  final audioService = AudioService(); //  use shared service
+  final audioService = AudioService(); // shared service
   late Future<List<Audios>> _audiosFuture;
 
   Future<List<Audios>> fetchAudios() async {
-    final snapshot =
-    await FirebaseFirestore.instance.collection('audios').get();
+    final snapshot = await FirebaseFirestore.instance.collection('audios').get();
     return snapshot.docs
         .map((doc) => Audios.fromFirestore(doc.data(), docId: doc.id))
         .toList();
@@ -32,16 +31,17 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
     } else {
       await audioService.playSong(song);
     }
-    setState(() {});
+    setState(() {}); // rebuild list
   }
 
   @override
   void initState() {
     super.initState();
-    _audiosFuture = fetchAudios(); // fetch only once
-    //  listen to service state
-    audioService.player.playerStateStream.listen((state) {
-      setState(() {}); // rebuild UI when player state changes
+    _audiosFuture = fetchAudios();
+
+    // listen to service changes
+    audioService.playerStateStream.listen((state) {
+      setState(() {}); // refresh buttons when player state changes
     });
   }
 
@@ -72,8 +72,8 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
               future: _audiosFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: const RiveAnimation.asset(
+                  return const Center(
+                    child: RiveAnimation.asset(
                       'assets/new_file.riv',
                       fit: BoxFit.contain,
                     ),
@@ -87,14 +87,17 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                 final audios = snapshot.data!;
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemCount: audios.length,
                   itemBuilder: (context, index) {
                     final song = audios[index];
+                    final isCurrent = audioService.currentSong?.id == song.id;
+                    final isPlaying = audioService.isPlaying && isCurrent;
+
                     return Center(
                       child: InkWell(
-                        onTap: ( ) {
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -125,27 +128,32 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: NetworkImage(song.coverUrl),
-                                    fit: BoxFit.cover,
+                              // cover + play button overlay
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: NetworkImage(song.coverUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    audioService.currentSong?.id == song.id &&
-                                        audioService.isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow_rounded,
-                                    color: Colors.white,
-                                    size: 25,
+                                  IconButton(
+                                    icon: Icon(
+                                      isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow_rounded,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    onPressed: () => _togglePlayPause(song),
                                   ),
-                                  onPressed: () => _togglePlayPause(song),
-                                ),
+                                ],
                               ),
                               const SizedBox(width: 10),
                               Expanded(

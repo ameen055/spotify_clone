@@ -46,8 +46,7 @@ class _HeroCardWidgetState extends State<HeroCardWidget> {
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xff0478ef), Color(0xff4cc5fe)],
-          ),
+            colors: [Color(0xff000000), Color(0xff444444)],          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(

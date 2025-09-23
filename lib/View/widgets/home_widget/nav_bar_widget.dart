@@ -44,7 +44,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
       currentIndex: widget.selectedIndex,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      selectedItemColor: Colors.blue.shade500,
+      selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black12,
       items: const [
         BottomNavigationBarItem(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String imagePath; // <-- pass only the image path
+  final String imagePath; //
   final bool hideBack;
 
   const BasicAppBar({super.key,
@@ -15,7 +15,7 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
-        onPressed: () {
+        onPressed:() {
           Navigator.pop(context);
         },
         icon: Container(

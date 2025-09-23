@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:study_flutter/Data/services/audio_service.dart';
-
 import '../../Data/model/audios_model.dart';
 
 class NowPlayingScreen extends StatefulWidget {
@@ -14,11 +12,10 @@ class NowPlayingScreen extends StatefulWidget {
 }
 
 class NowPlayingScreenState extends State<NowPlayingScreen> {
-  final player = AudioPlayer();
+  final audioService = AudioService(); //  shared service
 
   @override
   Widget build(BuildContext context) {
-    final audioService = AudioService();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -41,14 +38,14 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Cover image the image of the currently playing
+                //  Cover image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(widget.audio.coverUrl),
                 ),
                 const SizedBox(height: 30),
 
-                // Title & Artist
+                //  Title & Artist
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -56,17 +53,17 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         widget.audio.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Satoshi',
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       widget.audio.artist,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Satoshi',
                         color: Colors.grey,
                         fontSize: 16,
@@ -76,7 +73,7 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                 ),
                 const SizedBox(height: 35),
 
-                // Slider & Time - which shows the progress of the song and the time
+                //  Slider & Duration (static for now)
                 Column(
                   children: [
                     SizedBox(
@@ -95,14 +92,12 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "0:00",
-                            style: const TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            widget
-                                .audio
-                                .duration, // directly from Firestore model
+                            widget.audio.duration, // from Firestore
                             style: const TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -110,34 +105,40 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+
+                //  Playback Controls
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: FaIcon(FontAwesomeIcons.repeat),
+                      icon: const FaIcon(FontAwesomeIcons.repeat),
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: FaIcon(FontAwesomeIcons.backward),
+                      icon: const FaIcon(FontAwesomeIcons.backward),
                     ),
+
+                    //  Play / Pause Button
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xff42c933),
+                        color: Color(0xf0000000),
                       ),
                       padding: const EdgeInsets.all(20),
                       child: StreamBuilder(
-                        stream: audioService.player.playerStateStream,
+                        stream: audioService.playerStateStream,
                         builder: (context, snapshot) {
                           final state = snapshot.data;
                           final playing = state?.playing ?? false;
+
                           return IconButton(
                             icon: FaIcon(
                               playing
                                   ? FontAwesomeIcons.pause
                                   : FontAwesomeIcons.play,
+                              color: const Color(0xffffffff),
                             ),
                             onPressed: () {
                               if (playing) {
@@ -150,20 +151,24 @@ class NowPlayingScreenState extends State<NowPlayingScreen> {
                         },
                       ),
                     ),
+
                     IconButton(
                       onPressed: () {},
-                      icon: FaIcon(FontAwesomeIcons.forward),
+                      icon: const FaIcon(FontAwesomeIcons.forward),
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: FaIcon(FontAwesomeIcons.shuffle),
+                      icon: const FaIcon(FontAwesomeIcons.shuffle),
                     ),
                   ],
                 ),
-                SizedBox(height: 28),
+
+                const SizedBox(height: 28),
+
+                //  Lyrics section
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(Icons.keyboard_arrow_up_outlined),
                     Text(
                       "Lyrics",
