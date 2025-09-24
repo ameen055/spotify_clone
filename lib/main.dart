@@ -17,7 +17,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthBloc()),
-        BlocProvider(create: (_) => AudioBloc()),
+        BlocProvider(create: (_) => AudioBloc ()),
       ],
       child: MyApp(),
     ),

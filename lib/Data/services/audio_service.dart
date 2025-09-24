@@ -2,9 +2,11 @@ import 'package:just_audio/just_audio.dart';
 import '../model/audios_model.dart';
 
 class AudioService {
+  // AudioService is a singleton class , below following 3 lines is the makes a singleton class
+  // or copy paste the following three lines to convert a class to singleton class
+  AudioService._internal();
   static final AudioService _instance = AudioService._internal();
   factory AudioService() => _instance;
-  AudioService._internal();
 
   final AudioPlayer _player = AudioPlayer();
   Audios? _currentSong;
