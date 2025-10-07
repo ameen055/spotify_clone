@@ -5,6 +5,7 @@ import 'package:rive/rive.dart';
 import '../../../Data/model/audios_model.dart';
 import '../../../Data/services/audio_service.dart';
 import '../../pages/nowplaying_page.dart';
+import '../loading_widget.dart';
 
 class PlayListsWidget extends StatefulWidget {
   const PlayListsWidget({super.key});
@@ -72,12 +73,7 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
               future: _audiosFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: RiveAnimation.asset(
-                      'assets/new_file.riv',
-                      fit: BoxFit.contain,
-                    ),
-                  );
+                  return    PlayListShimmer();
                 } else if (snapshot.hasError) {
                   return Center(child: Text("Error: ${snapshot.error}"));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -101,8 +97,11 @@ class _PlayListsWidgetState extends State<PlayListsWidget> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  NowPlayingScreen(audio: song),
+                              builder: (_) => NowPlayingScreen(
+                                audio: song,
+                                playlist: audios,   // pass the current list from snapshot
+                                startIndex: index,
+                              ),
                             ),
                           );
                         },

@@ -8,6 +8,12 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
   final AudioService _audioService = AudioService();
 
   AudioBloc() : super(AudioInitial()) {
+    // Set Playlist
+    on<SetPlaylist>((event, emit) async {
+      await _audioService.setPlaylist(event.songs, startIndex: event.startIndex);
+      emit(AudioPlaying(event.songs[event.startIndex]));
+    });
+
     // Play
     on<PlayAudio>((event, emit) async {
       await _audioService.playSong(event.song);
@@ -26,7 +32,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
     on<ResumeAudio>((event, emit) async {
       if (state is AudioPaused) {
         final song = (state as AudioPaused).song;
-        await _audioService.playSong(song); // resume same song
+        await _audioService.playSong(song);
         emit(AudioPlaying(song));
       }
     });
@@ -35,6 +41,18 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
     on<StopAudio>((event, emit) async {
       await _audioService.stop();
       emit(AudioStopped());
+    });
+
+    // Next
+    on<NextAudio>((event, emit) async {
+      final song = await _audioService.next();
+      if (song != null) emit(AudioNext(song));
+    });
+
+    // Previous
+    on<PreviousAudio>((event, emit) async {
+      final song = await _audioService.previous();
+      if (song != null) emit(AudioPrevious(song));
     });
   }
 }

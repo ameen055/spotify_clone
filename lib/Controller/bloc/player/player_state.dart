@@ -15,3 +15,13 @@ class AudioPaused extends AudioState {
 }
 
 class AudioStopped extends AudioState {}
+
+class AudioNext extends AudioState {
+  final Audios song;
+  AudioNext(this.song);
+}
+
+class AudioPrevious extends AudioState {
+  final Audios song;
+  AudioPrevious(this.song);
+}

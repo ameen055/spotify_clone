@@ -147,6 +147,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget homeBodyWidget() {
     return SingleChildScrollView(
+      // physics: BouncingScrollPhysics(),
       child: Column(
         children: [
           SizedBox(height: 20),

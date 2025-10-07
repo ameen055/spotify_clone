@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/splash_page.dart';
 import '../../View/pages/onboarding_page.dart';
 import '../../View/pages/home_page.dart';
+import '../../View/widgets/loading_widget.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

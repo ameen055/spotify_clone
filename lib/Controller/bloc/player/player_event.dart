@@ -12,3 +12,13 @@ class PauseAudio extends AudioEvent {}
 class ResumeAudio extends AudioEvent {}
 
 class StopAudio extends AudioEvent {}
+
+class NextAudio extends AudioEvent {}
+
+class PreviousAudio extends AudioEvent {}
+
+class SetPlaylist extends AudioEvent {
+  final List<Audios> songs;
+  final int startIndex;
+  SetPlaylist(this.songs, {this.startIndex = 0});
+}

@@ -5,6 +5,7 @@ import 'package:rive/rive.dart' hide Image;
 import '../../../Data/model/audios_model.dart';
 import '../../../Data/services/audio_service.dart';
 import '../../pages/nowplaying_page.dart';
+import '../loading_widget.dart';
 
 class AlbumWidget extends StatefulWidget {
   const AlbumWidget({super.key});
@@ -66,46 +67,45 @@ class _AlbumWidgetState extends State<AlbumWidget> {
         const SizedBox(height: 10),
         SizedBox(
           height: 170,
-          child: FutureBuilder<List<Audios>>(
-            future: _audiosFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: RiveAnimation.asset(
-                    'assets/new_file.riv',
-                    fit: BoxFit.contain,
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No songs found"));
-              }
+            child: FutureBuilder<List<Audios>>(
+              future: _audiosFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return AlbumShimmer();
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text("No songs found"));
+                }
 
-              final audios = snapshot.data!;
-              return ListView.separated(
-                padding: const EdgeInsets.only(left: 32.0),
-                scrollDirection: Axis.horizontal,
-                itemCount: audios.length,
-                separatorBuilder: (context, index) => const SizedBox(width: 12),
-                itemBuilder: (context, index) {
-                  final song = audios[index];
-                  final isCurrent = audioService.currentSong?.id == song.id;
-                  final isPlaying = audioService.isPlaying && isCurrent;
+                final audios = snapshot.data!;
+                return ListView.separated(
+                  padding: const EdgeInsets.only(left: 32.0),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: audios.length,
+                  separatorBuilder: (context, index) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final song = audios[index];
+                    final isCurrent = audioService.currentSong?.id == song.id;
+                    final isPlaying = audioService.isPlaying && isCurrent;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  NowPlayingScreen(audio: song),
-                            ),
-                          );
-                        },
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => NowPlayingScreen(
+                                  audio: song,
+                                  playlist: audios,   // pass the current list from snapshot
+                                  startIndex: index,
+                                ),
+                              ),
+                            );
+
+                          },
                         child: Container(
                           height: 120,
                           width: 160,

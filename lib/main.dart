@@ -9,6 +9,7 @@ import 'Data/services/authgate.dart';
 import 'View/pages/home_page.dart';
 import 'View/pages/nowplaying_page.dart';
 import 'View/pages/onboarding_page.dart';
+import 'Controller/argumentclass.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,13 +47,19 @@ class MyApp extends StatelessWidget {
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/nowPlaying') {
-          final audio = settings.arguments as Audios; // Pass Audios object
+          final args = settings.arguments as NowPlayingArgs;
+
           return MaterialPageRoute(
-            builder: (context) => NowPlayingScreen(audio: audio),
+            builder: (context) => NowPlayingScreen(
+              audio: args.audio,
+              playlist: args.playlist,
+              startIndex: args.startIndex,
+            ),
           );
         }
         return null;
       },
+
     );
   }
 }
