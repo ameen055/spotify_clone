@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:study_flutter/View/pages/splash_page.dart';
 import '../../View/pages/onboarding_page.dart';
 import '../../View/pages/home_page.dart';
+import '../../View/widgets/loading_indicator.dart';
 import '../../View/widgets/loading_widget.dart';
 
 class AuthGate extends StatelessWidget {
@@ -17,7 +18,7 @@ class AuthGate extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasData) {
-          return HomePage(); // Already logged in
+          return FullLoadingIndicator(); // Already logged in
         }
         return SplashScreen(); // Not logged in
       },
